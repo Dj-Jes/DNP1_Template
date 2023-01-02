@@ -7,7 +7,7 @@ public class TodoContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Todo> Todos { get; set; }
-
+    public TodoContext(DbContextOptions<TodoContext> options) : base(options) { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite("Data Source = ../EfcDataAccess/Todo.db");
@@ -15,7 +15,19 @@ public class TodoContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Todo>().HasKey(todo => todo.Id);
-        modelBuilder.Entity<User>().HasKey(user => user.Id);
+        modelBuilder.Entity<Todo>()
+            .HasKey(todo => todo.Id);
+
+
+        modelBuilder.Entity<User>()
+            .HasMany(t => t.Todos)
+            .WithOne(u => u.Owner)
+            .HasForeignKey(u => u.Id);
+
+        /*modelBuilder.Entity<Todo>()
+            .HasKey(todo => todo.Id);
+        modelBuilder.Entity<User>()
+            .HasKey(user => user.Id);
+            */
     }
 }

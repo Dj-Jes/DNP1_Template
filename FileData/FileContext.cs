@@ -1,9 +1,10 @@
 ﻿using System.Text.Json;
 using Domain.Models;
 
+
 namespace FileData;
 
-public class FileContext
+public class FileContext 
 {
     private const string filePath = "data.json";
     private DataContainer? dataContainer;
